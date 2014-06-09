@@ -1,0 +1,214 @@
+t_143x165_hex:
+  height: 165
+  width: 143
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_team_hex:
+  height: 165
+  width: 143
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_main_hex:
+  height: 130
+  width: 112
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_61x70_hex:
+  height: 70
+  width: 61
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_keep_hex:
+  height: 70
+  width: 61
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_kept_by_hex:
+  height: 80
+  width: 70
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_activity_hex:
+  height: 50
+  width: 43
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_navatar_hex:
+  height: 30
+  width: 26
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_main_hex_trans:
+  height: 130
+  width: 112
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_navatar_hex_trans:
+  height: 30
+  width: 26
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_navatar_big_hex_trans:
+  height: 36
+  width: 32
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_kept_by_hex_trans:
+  height: 80
+  width: 70
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_keep_hex_trans_large:
+  height: 70
+  width: 61
+  fit_type: crop
+  transparency_mask_file: hex.png 
+
+t_post_large:
+  height: 480
+  width: 480
+  fit_type: crop
+
+t_post_medium:
+  height: 256
+  width: 256
+  fit_type: crop
+
+t_post_grid2:
+  width: 225
+  height: 1 #ignored
+  min_height: 160
+  max_height: 600
+  fit_type: fitwidth
+
+t_post_grid_progressive:
+  width: 225
+  height: 1 #ignored
+  min_height: 160
+  max_height: 600
+  fit_type: fitwidth
+
+t_caine_grid:
+  width: 210
+  height: 1 #ignored
+  min_height: 150
+  max_height: 560
+  fit_type: fitwidth
+
+t_post_small:
+  width: 90
+  height: 90
+  fit_type: crop
+
+t_post_small3:
+  width: 142
+  height: 142
+  fit_type: crop
+
+t_post_44x44:
+  width: 44
+  height: 44
+  fit_type: zoomcrop
+
+t_post_276x276:
+  width: 276
+  height: 276
+  fit_type: zoomcrop
+
+t_post_138x138:
+  width: 138
+  height: 138
+  fit_type: zoomcrop
+
+t_detail_640w_high:
+  width: 640
+  height: 1 #ignored
+  fit_type: fitwidth
+
+t_grid_284w:
+  transform: t_grid_284w
+  width: 142
+  height: 1 #ignored
+  fit_type: fitwidth
+
+t_grid_472w:
+  width: 236
+  height: 1 #ignored
+  fit_type: fitwidth
+
+t_detail_640w_high:
+  width: 640
+  height: 1 #ignored
+  fit_type: limitwidth
+
+t_thumb_100:
+  width: 50
+  height: 50
+  fit_type: crop
+
+t_thumb_68:
+  width: 34
+  height: 34
+  fit_type: crop
+
+t_blog_iphone_low_res:
+  width: 320
+  height: 365
+  fit_type: crop
+
+t_blog_iphone_high_res:
+  width: 640
+  height: 730
+  fit_type: crop
+
+t_blog_ipad_low_res:
+  width: 768
+  height: 788
+  fit_type: crop
+
+t_blog_ipad_high_res:
+  width: 1536
+  height: 1576
+  fit_type: crop
+
+t_blog_web_list:
+  width: 300
+  height: 220
+  fit_type: crop
+
+t_blog_web_detail_page:
+  width: 500
+  height: 268
+  fit_type: crop
+
+t_blog_web_detail_page_full_height:
+  width: 500
+  height: 1 #ignored
+  fit_type: limitwidth
+
+t_blog_square:
+  width: 768
+  height: 788
+  fit_type: crop
+
+t_blog_square_300:
+  width: 300
+  height: 300
+  fit_type: crop
+
+t_more_from_keep:
+  width: 150
+  height: 150
+  fit_type: crop
