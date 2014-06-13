@@ -52,3 +52,8 @@ limitwidth_narrow:
   height: 0
   fit_type: limitwidth
 
+hex_punchout:
+  width: 100
+  height: 100
+  fit_type: crop
+  transparency_mask_file: hex.png 

@@ -2,6 +2,7 @@
 """
 
 import logging
+import os
 import sys
 import cStringIO as StringIO
 
@@ -68,8 +69,9 @@ def process_image(image_file, image_size_def):
       im = _resize_image(im, image_size_def.width, None)
   else:
     raise ValueError("transform type %s not handled." % t)
-  #TODO: deal with transparency masks.
   # now shove it in a stringio buffer and return it.
+  if image_size_def.transparency_mask_file is not None:
+    im = _apply_transparency_mask(im, image_size_def.transparency_mask_file)
   content = StringIO.StringIO()
   # write it as a jpg, or if we added transparency, as a png.
   fmt = orig_format
@@ -143,7 +145,19 @@ def _upright_image(im):
       im.format = fmt
   return im
 
-def _apply_transparency_mask(im, transparency_mask_file):
-  pass
 
+def _apply_transparency_mask(im, transparency_mask_file):
+  """apply the alpha channel from the mask file to the image.
+     IF THEY ARENT EXACTLY THE SAME SIZE THE MASK FILE GETS
+     RESIZED, IGNORING ASPECT RATIO AND SCALE!!!
+  """
+  f_name = os.path.join(os.path.dirname(__file__), 'masks',
+      transparency_mask_file)
+  if not os.path.exists(f_name):
+    return im
+  im.convert("RGBA")
+  im_mask = Image.open(f_name).resize(im.size, Image.ANTIALIAS)
+  alpha = im_mask.split()[-1] # (r, g, b, a)
+  im.putalpha(alpha)
+  return im
 
