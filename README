@@ -4,3 +4,4 @@ DINGO
 A simple image resizing webserver that pulls from a source, resizes, and hosts an image.
 
 All without a cache, so it's horribly inefficient!
+
