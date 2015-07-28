@@ -48,3 +48,4 @@ dingo.egg-info/
 .project
 .pydevproject
 flycheck-*
+.*vimrc
