@@ -1,19 +1,31 @@
+from __future__ import absolute_import
+import logging
 import os
 
 import yaml
+from lipstick.utils import apath
 
-from dingo.image_size_definition import ImageSizeDefinition
+from .image_processing import ImageTransform
 
-_etc_dir = os.path.join(os.path.dirname(__file__), 'etc')
+
+log = logging.getLogger(__name__)
+
+
+ROOT_DIR = os.path.dirname(__file__)
+_ETC_DIR = apath(ROOT_DIR, 'etc')
+
+
+log.debug('Root directory: "%s"', ROOT_DIR)
+
 
 settings = {}
 settings['url_prefix'] = ''
 
-transforms = {}
-with open(os.path.join(_etc_dir, 'transforms.yaml'), 'r') as y:
-  tc = yaml.load(y)
-  for name, t in tc.items():
-    transforms[name] = ImageSizeDefinition(name, t['width'], t['height'],
-        t['fit_type'], t.get('min_height'), t.get('max_height'),
-        t.get('transparency_mask_file'))
 
+transforms = {}
+with open(apath(_ETC_DIR, 'transforms.yaml')) as y:
+  for name, transform in yaml.load(y).iteritems():
+    try:
+      transforms[name] = ImageTransform(name, **transform)
+    except TypeError:
+      raise TypeError('Invalid transformation definition: "%s"' % name)

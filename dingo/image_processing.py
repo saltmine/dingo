@@ -3,6 +3,7 @@
 from __future__ import division
 import cStringIO as StringIO
 import os
+import sys
 
 from lipstick.utils import transform_exception
 from PIL import Image, ExifTags
@@ -10,9 +11,33 @@ from PIL import Image, ExifTags
 from exceptions import ImageException
 
 
-def process_image(image_file, image_size_def):
-  """given a file-like object and an image size definition, resize the image
-     and return a new file-like object as well as the encoding.
+class ImageTransform(object):
+  """Just a container class for organizing an image transform.
+    Pretty bare-bones, but slightly more reliable than a dict.
+  """
+  def __init__(self, name, width, height, fit_type, min_height=None,
+      max_height=None, transparency_mask_file=None):
+    self.name = name
+    self.width = width
+    self.height = height
+    self.apsect = sys.maxint
+    self.fit_type = fit_type
+    self.min_height = min_height
+    self.max_height = max_height
+    self.transparency_mask_file = transparency_mask_file
+
+  @property
+  def aspect(self):
+    try:
+      _aspect = self.width / self.height
+    except ZeroDivisionError:
+      _aspect = sys.maxint
+    return _aspect
+
+
+def process_image(image_file, transform):
+  """given a file-like object and an image transform definition, resize
+  the image and return a new file-like object as well as the encoding.
   """
   # go to the start of the image file if we're not there already
   image_file.seek(0)
@@ -26,54 +51,54 @@ def process_image(image_file, image_size_def):
   if im.mode == "P":
     im.convert("RGB")
   # going to build a switch statement here, so shorten our 'case' variable
-  if image_size_def.fit_type == "fitwidth":
+  if transform.fit_type == "fitwidth":
     # we make the width to whatever's specified and the height ends between
     # min_height and max_height, if specified.
     # First, let's calculate what the height would be if we did the transform.
-    scale = image_size_def.width / orig_width
+    scale = transform.width / orig_width
     potential_height = scale * orig_height
 
-    if potential_height < image_size_def.min_height:
+    if potential_height < transform.min_height:
       # scale height to min_height, then crop the sides to width.
-      im = _resize_image(im, None, image_size_def.min_height)
-      im = _crop_image(im, image_size_def.width, image_size_def.min_height)
-    elif potential_height > image_size_def.max_height:
+      im = _resize_image(im, None, transform.min_height)
+      im = _crop_image(im, transform.width, transform.min_height)
+    elif potential_height > transform.max_height:
       # scale the image to the right width, then crop the top and bottom.
-      im = _resize_image(im, image_size_def.width, None)
-      im = _crop_image(im, image_size_def.width, image_size_def.max_height)
+      im = _resize_image(im, transform.width, None)
+      im = _crop_image(im, transform.width, transform.max_height)
     else:
       # piece of cake, we're not in trouble in terms of cropping
-      im = _resize_image(im, image_size_def.width, None)
+      im = _resize_image(im, transform.width, None)
 
-  elif image_size_def.fit_type in ("crop", "zoomcrop"):
+  elif transform.fit_type in ("crop", "zoomcrop"):
     # scale, then crop the excess.
     # first apply the correct scale.
     orig_aspect = orig_width / orig_height
-    new_aspect = image_size_def.width / image_size_def.height
+    new_aspect = transform.width / transform.height
     if orig_aspect > new_aspect:
       # it's too wide for the new aspect ratio, fit height then crop.
-      im = _resize_image(im, None, image_size_def.height)
+      im = _resize_image(im, None, transform.height)
     else:
       # it's too tall (or exactly right), so we fit width then crop.
-      im = _resize_image(im, image_size_def.width, None)
+      im = _resize_image(im, transform.width, None)
     # crop it!
-    im = _crop_image(im, image_size_def.width, image_size_def.height)
+    im = _crop_image(im, transform.width, transform.height)
 
-  elif image_size_def.fit_type == "limitwidth":
+  elif transform.fit_type == "limitwidth":
     # width can be between 0 and the width specified, height scaled.
-    if orig_width > image_size_def.width:
-      im = _resize_image(im, image_size_def.width, None)
+    if orig_width > transform.width:
+      im = _resize_image(im, transform.width, None)
   else:
-    message = "transform type %s not handled." % image_size_def.fit_type
+    message = "transform type %s not handled." % transform.fit_type
     raise ValueError(message)
 
   # now shove it in a stringio buffer and return it.
-  if image_size_def.transparency_mask_file is not None:
-    im = _apply_transparency_mask(im, image_size_def.transparency_mask_file)
+  if transform.transparency_mask_file is not None:
+    im = _apply_transparency_mask(im, transform.transparency_mask_file)
   content = StringIO.StringIO()
   # write it as a jpg, or if we added transparency, as a png.
   fmt = orig_format
-  if image_size_def.transparency_mask_file:
+  if transform.transparency_mask_file:
     fmt = "PNG"
   im.save(content, format=fmt)
   content.seek(0)

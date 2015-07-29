@@ -4,7 +4,7 @@ import sys
 from nose.tools import eq_
 import yaml
 
-from dingo import image_processing, image_size_definition
+from dingo import image_processing
 
 class TestImageProcessing(object):
   """Test the image processing module.
@@ -27,7 +27,7 @@ class TestImageProcessing(object):
     # for each transform in the config, generate an ImageSizeDefinition
     for name, t in tc.items():
       cls.transforms.append(
-        image_size_definition.ImageSizeDefinition(name,
+        image_processing.ImageTransform(name,
           t['width'], t['height'], t['fit_type'], t.get('min_height'),
           t.get('max_height'), t.get('transparency_mask_file')))
     # just for convinience.

@@ -1,3 +1,15 @@
+# Transform definition params:
+#
+# Required: 
+#   - width
+#   - height
+#   - fit_type
+# Optional:
+#   - min_height
+#   - max_height
+#   - transparency_mask_file
+
+
 t_143x165_hex:
   height: 165
   width: 143
@@ -138,7 +150,6 @@ t_detail_640w_high:
   fit_type: fitwidth
 
 t_grid_284w:
-  transform: t_grid_284w
   width: 142
   height: 1 #ignored
   fit_type: fitwidth
