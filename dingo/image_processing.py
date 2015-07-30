@@ -7,8 +7,9 @@ import sys
 
 from lipstick.utils import transform_exception
 from PIL import Image, ExifTags
+import requests
 
-from exceptions import ImageException
+from .exceptions import ImageException
 
 
 class ImageTransform(object):

@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname(__file__)
 _ETC_DIR = apath(ROOT_DIR, 'etc')
 
 
-log.debug('Root directory: "%s"', ROOT_DIR)
+log.info('Root directory: "%s"', ROOT_DIR)
 
 
 settings = {}
@@ -27,5 +27,6 @@ with open(apath(_ETC_DIR, 'transforms.yaml')) as y:
   for name, transform in yaml.load(y).iteritems():
     try:
       transforms[name] = ImageTransform(name, **transform)
+      log.debug('Loaded transform "%s"', name)
     except TypeError:
       raise TypeError('Invalid transformation definition: "%s"' % name)
