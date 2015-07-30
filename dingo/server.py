@@ -1,10 +1,11 @@
-from flask import Flask, make_response
+from __future__ import absolute_import
 import cStringIO as StringIO
 import mimetypes
 
-from image_processing import process_image
-from files import get_file
-from config import transforms
+from flask import Flask, make_response
+
+from .image_processing import get_file, process_image
+from .config import transforms
 
 app = Flask(__name__)
 

@@ -5,7 +5,7 @@ import os
 import yaml
 from lipstick.utils import apath
 
-from .image_processing import ImageTransform
+from .lib import ImageTransform
 
 
 log = logging.getLogger(__name__)

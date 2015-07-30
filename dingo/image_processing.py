@@ -1,39 +1,22 @@
 """This contains all the functionality for image manipulation.
 """
-from __future__ import division
+from __future__ import absolute_import, division
 import cStringIO as StringIO
 import os
-import sys
 
 from lipstick.utils import transform_exception
 from PIL import Image, ExifTags
 import requests
 
+from .config import settings
 from .exceptions import ImageException
 
 
-class ImageTransform(object):
-  """Just a container class for organizing an image transform.
-    Pretty bare-bones, but slightly more reliable than a dict.
-  """
-  def __init__(self, name, width, height, fit_type, min_height=None,
-      max_height=None, transparency_mask_file=None):
-    self.name = name
-    self.width = width
-    self.height = height
-    self.apsect = sys.maxint
-    self.fit_type = fit_type
-    self.min_height = min_height
-    self.max_height = max_height
-    self.transparency_mask_file = transparency_mask_file
-
-  @property
-  def aspect(self):
-    try:
-      _aspect = self.width / self.height
-    except ZeroDivisionError:
-      _aspect = sys.maxint
-    return _aspect
+def get_file(file_name):
+  url = file_name
+  if settings.get('url_prefix'):
+    url = "%s/%s" % (settings['url_prefix'], file_name)
+  requests.get(url).content
 
 
 def process_image(image_file, transform):
@@ -147,7 +130,8 @@ def _upright_image(im):
       raw_exif = im._getexif()
     except:
       # on ANY error in getting exif data
-      raw_exif = None
+      pass
+
     if raw_exif:
       exif = {ExifTags.TAGS.get(k, 'UNKNOWN'): v for k, v in raw_exif.items()}
       # see: http://sylvana.net/jpegcrop/exif_orientation.html

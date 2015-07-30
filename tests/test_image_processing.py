@@ -1,10 +1,11 @@
 import os
-import sys
 
 from nose.tools import eq_
 import yaml
 
 from dingo import image_processing
+from dingo.lib import ImageTransform
+
 
 class TestImageProcessing(object):
   """Test the image processing module.
@@ -20,26 +21,25 @@ class TestImageProcessing(object):
 
   @classmethod
   def setUpClass(cls):
-    #load all the transforms from test_transforms.yaml
+    # load all the transforms from test_transforms.yaml
     tc = {}
     with open(os.path.join('tests', 'test_transforms.yaml'), 'r') as y:
       tc = yaml.load(y)
     # for each transform in the config, generate an ImageSizeDefinition
     for name, t in tc.items():
       cls.transforms.append(
-        image_processing.ImageTransform(name,
+        ImageTransform(name,
           t['width'], t['height'], t['fit_type'], t.get('min_height'),
           t.get('max_height'), t.get('transparency_mask_file')))
     # just for convinience.
     cls.orig_dir = os.path.join('tests', cls.test_images_dir, 'orig')
     cls.originals = os.listdir(cls.orig_dir)
 
-    #set up the expected checksums
+    # set up the expected checksums
     with open(os.path.join('tests', 'expected_results.yaml'), 'r') as y:
       cls.expected_results = yaml.load(y)
       if not cls.expected_results:
         cls.expected_results = {}
-
 
   @classmethod
   def tearDownClass(cls):
@@ -54,14 +54,12 @@ class TestImageProcessing(object):
         for k, v in cls.no_expected.items():
           f.write("%s: %s\n" % (k, v))
 
-
   def test_transforms(self):
     # cool stuff; it's a test generator!  For each transform, yield a
     # test for it for each image.
     for t in self.transforms:
       for i in self.originals:
         yield self._test_transform, t, i
-
 
   def _test_transform(self, trans, img):
     # build the transform definition

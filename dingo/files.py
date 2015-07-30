@@ -1,6 +1,7 @@
+from __future__ import absolute_import
 import requests
 
-from config import settings
+from .config import settings
 
 
 def get_file(file_name):
