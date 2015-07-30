@@ -16,7 +16,7 @@ def get_file(file_name):
   url = file_name
   if settings.get('url_prefix'):
     url = "%s/%s" % (settings['url_prefix'], file_name)
-  requests.get(url).content
+  return requests.get(url).content
 
 
 def process_image(image_file, transform):
